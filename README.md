@@ -1,68 +1,68 @@
 # Reaper Clip Exporter
 
-Script Lua para preparar clips de audio en REAPER mediante **Dynamic Split, fades y regiones numeradas**. Pensado para agilizar tareas repetitivas al organizar efectos de sonido, variaciones y otros clips para un posterior renderizado.
+A Lua script for preparing audio clips in REAPER using **Dynamic Split, fades, and numbered regions**. Designed to simplify repetitive editing tasks when organizing sound effects, variations, and other clips for rendering.
 
-**Archivo:** `joseisaudio_clipExporter.lua`
+**Script:** `joseisaudio_clipExporter.lua`
 
-> Esta versión prepara los ítems y crea regiones. No renderiza ni exporta archivos de audio automáticamente.
+> This version prepares items and creates regions. It does not automatically render or export audio files.
 
-## Funciones
+## Features
 
-- Abre la ventana nativa de **Dynamic Split** para configurar y previsualizar los cortes.
-- Aplica fades de entrada y salida a los ítems seleccionados.
-- Permite ajustar cada fade entre **0 y 2000 ms** mediante deslizadores.
-- Ofrece siete opciones de forma para cada fade.
-- Crea regiones opcionales con un nombre base y numeración automática: `SFX_01`, `SFX_02`, etc.
-- Agrupa la aplicación de fades y la creación de regiones en una operación de deshacer.
+- Opens REAPER's native **Dynamic Split** window to configure and preview cuts.
+- Applies fade-ins and fade-outs to selected items.
+- Provides independent fade duration sliders ranging from **0 to 2000 ms**.
+- Offers seven shape options for each fade.
+- Creates optional regions with a base name and automatic numbering: `SFX_01`, `SFX_02`, etc.
+- Groups fade application and region creation into a single undo operation.
 
-## Requisitos
+## Requirements
 
-- REAPER con soporte para ReaScript Lua.
-- El archivo `joseisaudio_clipExporter.lua`.
+- REAPER with Lua ReaScript support.
+- The `joseisaudio_clipExporter.lua` file.
 
-El script utiliza las API nativas de REAPER y su interfaz gráfica `gfx`. No requiere SWS, ReaPack, ReaImGui ni una instalación independiente de Lua.
+The script uses REAPER's built-in APIs and `gfx` interface. SWS, ReaPack, ReaImGui, and a separate Lua installation are not required.
 
-## Instalación
+## Installation
 
-1. Descarga `joseisaudio_clipExporter.lua` y guárdalo en una ubicación permanente.
-2. En REAPER, abre **Actions → Show action list…**.
-3. En la sección **Main**, utiliza **ReaScript → Load…** para cargar el archivo.
-4. Selecciona el script en la lista de acciones y presiona **Run**.
+1. Download `joseisaudio_clipExporter.lua` and save it in a permanent location.
+2. In REAPER, open **Actions → Show action list…**.
+3. In the **Main** section, use **ReaScript → Load…** to load the file.
+4. Select the script in the action list and click **Run**.
 
-Puedes asignarle un atajo de teclado desde la lista de acciones.
+You can assign a keyboard shortcut from the action list.
 
-## Uso
+## Usage
 
-### 1. Preparar y dividir los ítems
+### 1. Prepare and split items
 
-1. Selecciona los ítems de audio que deseas procesar.
-2. Ejecuta el script.
-3. Presiona **OPEN DYNAMIC SPLIT**.
-4. Ajusta las opciones de Dynamic Split y revisa la previsualización de los cortes.
-5. Ejecuta la división en esa ventana y regresa al script.
+1. Select the audio items you want to process.
+2. Run the script.
+3. Click **OPEN DYNAMIC SPLIT**.
+4. Adjust the Dynamic Split settings and review the cut preview.
+5. Execute the split in that window, then return to the script.
 
-La configuración y la ejecución del recorte o la división se realizan dentro de Dynamic Split. El script abre la herramienta; no configura sus parámetros ni confirma automáticamente el resultado.
+Trimming or splitting is configured and performed within Dynamic Split. The script opens the tool; it does not configure its parameters or automatically verify the result.
 
-### 2. Configurar los fades
+### 2. Configure fades
 
-Selecciona una forma para **Fade in shape** y otra para **Fade out shape**. Ajusta sus duraciones con los deslizadores.
+Choose a shape under **Fade in shape** and **Fade out shape**, then adjust their durations using the sliders.
 
-| Control | Valor inicial | Rango |
+| Control | Default | Range |
 | --- | --- | --- |
 | Fade in duration | 50 ms | 0–2000 ms |
 | Fade out duration | 50 ms | 0–2000 ms |
-| Forma de entrada y salida | Linear | Siete opciones |
+| Fade-in and fade-out shapes | Linear | Seven options |
 
-Las etiquetas mostradas por el script son: **Linear, Fast Start, Fast End, S-Curve, Bezier, Logarithmic y Exponential**.
+The labels displayed by the script are **Linear, Fast Start, Fast End, S-Curve, Bezier, Logarithmic, and Exponential**.
 
-### 3. Crear regiones y aplicar
+### 3. Create regions and apply
 
-1. Activa **Create regions after Dynamic Split** si deseas crear regiones.
-2. Escribe un nombre en **Base region name**, por ejemplo `Footstep_Concrete`.
-3. Verifica que estén seleccionados los ítems que quieres procesar.
-4. Presiona **APPLY FADES / REGIONS**.
+1. Enable **Create regions after Dynamic Split** if you want to create regions.
+2. Enter a **Base region name**, such as `Footstep_Concrete`.
+3. Verify that the items you want to process are selected.
+4. Click **APPLY FADES / REGIONS**.
 
-Para tres ítems con comienzos distintos, el nombre del ejemplo produce:
+For three items with different start positions, this example produces:
 
 ```text
 Footstep_Concrete_01
@@ -70,35 +70,35 @@ Footstep_Concrete_02
 Footstep_Concrete_03
 ```
 
-Cada región comienza en la posición del ítem y termina al final de su duración. El mensaje inferior indica cuántos ítems se procesaron y cuántas regiones se crearon.
+Each region starts at its item's position and ends at the end of that item's duration. The status message reports how many items were processed and how many regions were created.
 
-También puedes usar **APPLY FADES / REGIONS** directamente sobre clips ya editados, sin abrir Dynamic Split.
+You can also use **APPLY FADES / REGIONS** directly on previously edited clips without opening Dynamic Split.
 
-### 4. Renderizar
+### 4. Render audio
 
-Para obtener archivos de audio, utiliza después las herramientas de renderizado de REAPER y configura allí las regiones, las fuentes de audio y los ajustes de salida que necesites. Este script no configura el renderizado ni la Region Render Matrix.
+To produce audio files, use REAPER's rendering tools afterward and configure the regions, audio sources, and output settings you need. This script does not configure rendering or the Region Render Matrix.
 
-## Comportamiento y limitaciones
+## Behavior and limitations
 
-- **Selección actual:** el botón de aplicación procesa los ítems seleccionados en ese momento. No conserva la selección inicial al abrir Dynamic Split.
-- **Fades existentes:** al aplicar, se sobrescriben las duraciones y formas de los fades manuales de los ítems seleccionados. No hay una opción para omitir este paso.
-- **Ítems simultáneos:** si varios ítems comienzan a menos de 0,0001 segundos entre sí, se crea una sola región para ese inicio. Su duración corresponde al primer ítem procesado, no necesariamente al más largo.
-- **Ejecuciones repetidas:** la numeración comienza en `01` en cada aplicación. No se revisan las regiones existentes, por lo que volver a aplicar puede crear nombres y regiones repetidos.
-- **Nombres:** un nombre base vacío o compuesto solo por espacios impide crear regiones. El campo admite caracteres ASCII imprimibles, hasta 80 caracteres; no admite tildes ni otros caracteres Unicode.
-- **Ajustes temporales:** las preferencias vuelven a sus valores iniciales al cerrar y ejecutar de nuevo el script.
-- **Edición de nombres:** el campo permite escribir al final y borrar con Backspace. Enter termina la edición y Esc cierra la ventana.
-- **Deshacer:** los fades y las regiones de cada aplicación forman un bloque de deshacer. La operación realizada en Dynamic Split se gestiona por separado.
+- **Current selection:** the apply button processes the items selected at that moment. It does not preserve the initial selection from when Dynamic Split was opened.
+- **Existing fades:** applying overwrites the selected items' manual fade durations and shapes. There is no option to skip this step.
+- **Simultaneous items:** if multiple items start less than 0.0001 seconds apart, only one region is created for that start position. Its duration comes from the first item processed, which may not be the longest.
+- **Repeated runs:** numbering restarts at `01` each time you apply. Existing regions are not checked, so applying again may create duplicate regions and names.
+- **Names:** an empty or whitespace-only base name prevents region creation. The field accepts up to 80 printable ASCII characters; accented letters and other Unicode characters are not supported.
+- **Temporary settings:** preferences return to their defaults when you close and rerun the script.
+- **Name editing:** the field supports typing at the end and deleting with Backspace. Enter ends editing, and Esc closes the window.
+- **Undo:** each application of fades and regions is grouped into one undo block. The operation performed in Dynamic Split is handled separately.
 
-## Solución de problemas
+## Troubleshooting
 
-| Situación | Qué revisar |
+| Situation | What to check |
 | --- | --- |
-| Dynamic Split no se abre desde el script | Selecciona al menos un ítem antes de presionar el botón. |
-| Aparece “No items are selected after Dynamic Split.” | Selecciona los clips resultantes y vuelve a aplicar. El mensaje también puede aparecer aunque no hayas usado Dynamic Split. |
-| No se crean regiones | Comprueba que la casilla esté activa y que el nombre base no esté vacío. |
-| Hay menos regiones que ítems seleccionados | Revisa si varios ítems comparten el mismo comienzo. |
-| No aparecen archivos de audio exportados | Realiza el renderizado por separado en REAPER. |
+| Dynamic Split does not open from the script | Select at least one item before clicking the button. |
+| “No items are selected after Dynamic Split.” appears | Select the resulting clips and apply again. This message can also appear if you have not used Dynamic Split. |
+| No regions are created | Check that the checkbox is enabled and the base name is not empty. |
+| There are fewer regions than selected items | Check whether multiple items share the same start position. |
+| No exported audio files appear | Render the audio separately in REAPER. |
 
-## Acerca de esta documentación
+## About this documentation
 
-Este README describe el comportamiento implementado en el archivo adjunto. No establece una versión mínima verificada de REAPER ni certifica compatibilidad probada por sistema operativo.
+This README describes the behavior implemented in the supplied script. It does not establish a verified minimum REAPER version or certify tested compatibility with specific operating systems.
